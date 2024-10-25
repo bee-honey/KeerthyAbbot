@@ -1,0 +1,51 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+desc "Create an api_key"
+lane :release do
+  api_key = app_store_connect_api_key(
+    key_id: "5R4JYSS39P",
+    issuer_id: "820ae89d-6b31-429b-a6c8-1b5ccf4b2ae0",
+    key_filepath: "/Users/naveenkeerthy/Abbot/Fastlane/AuthKey_5R4JYSS39P.p8",
+    duration: 1200, # optional (maximum 1200)
+    in_house: false # optional but may be required if using match/sigh
+  )
+
+  # pilot(api_key: api_key)
+end
+
+desc "Create on developer portal and App store connect"
+lane :create_app do
+  create_app_online
+end
+
+platform :ios do
+  desc "Signing syncing"
+  lane :signing do
+    # add actions here: https://docs.fastlane.tools/actions
+  end
+
+  desc "Build binary"
+  lane :build do
+    signing
+  end
+
+  desc "Uploading to Testflight"
+  lane :release do
+    build
+  end
+end
